@@ -28,31 +28,32 @@ function Home() {
   //react router
   let history = useHistory();
 
-  const updateName = () => {
-    dispatch({
-      type: "LOGGED_IN_USER",
-      payload: "Sofia Moura",
-    });
-  };
+  // const updateName = () => {
+  //   dispatch({
+  //     type: "LOGGED_IN_USER",
+  //     payload: "Sofia Moura",
+  //   });
+  // };
 
   if (loading) return <p className="p-5">Loading...</p>;
 
   return (
     <div className="container">
       <div className="row p-5">
-        {data.allPosts.map((p) => (
-          <div className="col-md-4" key={p.id}>
-            <div className="card">
-              <div className="card-body">
-                <div className="card-title">
-                  <h4>{p.title}</h4>
+        {data &&
+          data.allPosts.map((p) => (
+            <div className="col-md-4" key={p.id}>
+              <div className="card">
+                <div className="card-body">
+                  <div className="card-title">
+                    <h4>{p.title}</h4>
+                  </div>
+                  <p className="card-text">{p.description}</p>
+                  <hr />
                 </div>
-                <p className="card-text">{p.description}</p>
-                <hr />
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <div className="row p-5">
         <button
@@ -65,9 +66,7 @@ function Home() {
       <hr />
       {JSON.stringify(state.user)}
       <hr />
-      <button className="btn btn-primary" onClick={updateName}>
-        Change user name
-      </button>
+
       {/* <hr />
       {JSON.stringify(history)} */}
     </div>

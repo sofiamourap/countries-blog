@@ -20,7 +20,7 @@ export default function Register() {
       `An email was send to ${email}. Click the link to complete your registration`
     );
     //save user email to local storage
-    window.localStorage.setItem("emailFormRegistration", email);
+    window.localStorage.setItem("emailForRegistration", email);
     setEmail("");
     setLoading(false);
   };

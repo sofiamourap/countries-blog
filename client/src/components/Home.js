@@ -64,7 +64,7 @@ function Home() {
         </button>
       </div>
       <hr />
-      {JSON.stringify(state.user)}
+      {JSON.stringify(state)}
       <hr />
 
       {/* <hr />

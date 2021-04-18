@@ -13,7 +13,7 @@ const firebaseReducer = (state, action) => {
 
 //state
 const initialState = {
-  user: "null",
+  user: "",
 };
 
 //create context
@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
       }
     });
     //cleanup
-    return () => unsubscribe();
+    unsubscribe();
   }, []);
 
   const value = { state, dispatch };

@@ -3,12 +3,31 @@ import { auth } from "../firebase";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
+import { useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
+
+const USER_CREATE = gql`
+  mutation userCreate {
+    userCreate {
+      username
+      email
+    }
+  }
+`;
 
 export default function CompleteRegistration() {
   const { dispatch } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  let history = useHistory();
+
+  useEffect(() => {
+    setEmail(window.localStorage.getItem("emailForRegistration"));
+  }, [history]);
+
+  const [userCreate] = useMutation(USER_CREATE);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +54,7 @@ export default function CompleteRegistration() {
           payload: { email: user.email, token: idTokenResult.token },
         });
         //make api request to save/update user in mongodb
+        userCreate();
         history.push("/");
       }
     } catch (error) {
@@ -43,12 +63,6 @@ export default function CompleteRegistration() {
       toast.error(error.message);
     }
   };
-
-  let history = useHistory();
-
-  useEffect(() => {
-    setEmail(window.localStorage.getItem("emailForRegistration"));
-  }, []);
 
   return (
     <div className="container p-5">

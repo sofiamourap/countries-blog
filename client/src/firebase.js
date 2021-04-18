@@ -1,5 +1,6 @@
-import * as firebase from "firebase";
-import { defaultTypeResolver } from "graphql";
+import firebase from "firebase";
+
+// import { defaultTypeResolver } from "graphql";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -14,6 +15,11 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp({});
+} else {
+  firebase.app(); // if already initialized, use that one
+}
 
-export const auth = firebase.auth;
-export const googleAuthProvider = new firebase.auth.googleAuthProvider();
+export const auth = firebase.auth();
+export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();

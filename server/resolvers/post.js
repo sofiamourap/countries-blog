@@ -11,7 +11,6 @@ const allPosts = async (parent, args, { req }) => {
 
 //mutations
 const newPost = (_, args) => {
-  // console.log(args);
   const { title, description } = args.input;
   const post = {
     id: posts.length + 1,

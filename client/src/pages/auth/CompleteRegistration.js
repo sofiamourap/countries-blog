@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../../context/authContext";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import AuthForm from "../components/forms/AuthForm";
+import AuthForm from "../../components/forms/AuthForm";
 
 const USER_CREATE = gql`
   mutation userCreate {

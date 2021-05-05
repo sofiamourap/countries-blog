@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
       }
     });
     //cleanup
-    unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   const value = { state, dispatch };

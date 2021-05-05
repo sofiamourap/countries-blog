@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../../context/authContext";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { auth, googleAuthProvider } from "../firebase";
+import { auth, googleAuthProvider } from "../../firebase";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import AuthForm from "../components/forms/AuthForm";
+import AuthForm from "../../components/forms/AuthForm";
 
 const USER_CREATE = gql`
   mutation userCreate {
@@ -18,8 +18,8 @@ const USER_CREATE = gql`
 
 export default function Login() {
   const { dispatch } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("sofiamourap@gmail.com");
+  const [password, setPassword] = useState("sofia123");
   const [loading, setLoading] = useState(false);
   let history = useHistory();
 

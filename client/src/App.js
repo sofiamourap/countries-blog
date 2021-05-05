@@ -7,10 +7,14 @@ import { ToastContainer } from "react-toastify";
 //components
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import Register from "./auth/Register";
-import Login from "./auth/Login";
-import CompleteRegistration from "./auth/CompleteRegistration";
+import Register from "./pages/auth/Register";
+import PasswordUpdate from "./pages/auth/PasswordUpdate";
+import Profile from "./pages/auth/Profile";
+import Login from "./pages/auth/Login";
+import CompleteRegistration from "./pages/auth/CompleteRegistration";
 import { AuthContext } from "./context/authContext";
+import PrivateRoute from "./components/PrivateRoute";
+import Post from "./pages/post/Post";
 
 function App() {
   const { state } = useContext(AuthContext);
@@ -33,19 +37,13 @@ function App() {
       <NavBar />
       <ToastContainer />
       <Switch>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/complete-registration">
-          <CompleteRegistration />
-        </Route>
-
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+        <Route path="/complete-registration" component={CompleteRegistration} />
+        <PrivateRoute path="/password/update" component={PasswordUpdate} />
+        <PrivateRoute path="/profile" component={Profile} />
+        <PrivateRoute path="/post/create" component={Post} />
+        <Route path="/" component={Home} />
       </Switch>
     </ApolloProvider>
   );

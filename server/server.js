@@ -62,6 +62,3 @@ app.listen(process.env.PORT, function () {
     `graphql server is ready at http://localhost${process.env.PORT}${apolloServer.graphqlPath}`
   );
 });
-
-// MONGO ATLAS PASSWORD: rRk5CGCjZwyym8rl
-// mongodb+srv://sofiamourap:rRk5CGCjZwyym8rl@cluster0.2z54z.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

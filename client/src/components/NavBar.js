@@ -41,7 +41,7 @@ export default function NavBar() {
               {user && (
                 <li className="nav-item active">
                   <Link className="nav-link " to="/profile">
-                    Profile
+                    {user && user.email.split("@")[0]}
                   </Link>
                 </li>
               )}

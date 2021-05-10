@@ -8,7 +8,7 @@ export default function PasswordForgot() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.prevendDefault();
+    e.preventDefault();
     setLoading(true);
 
     const config = {

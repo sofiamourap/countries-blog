@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import ApolloClient from "apollo-boost";
 import { Switch, Route } from "react-router-dom";
+
+import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ToastContainer } from "react-toastify";
 //components
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import Register from "./pages/auth/Register";
 import PasswordUpdate from "./pages/auth/PasswordUpdate";
@@ -40,7 +41,7 @@ function App() {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/complete/registration" component={CompleteRegistration} />
+        <Route path="/complete-registration" component={CompleteRegistration} />
         <Route path="/password/forgot" component={PasswordForgot} />
         <PrivateRoute path="/password/update" component={PasswordUpdate} />
         <PrivateRoute path="/profile" component={Profile} />

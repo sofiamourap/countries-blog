@@ -40,7 +40,7 @@ export default function Login() {
           });
           // send user info to our server
           userCreate();
-          history.push("/");
+          history.push("/profile");
         });
     } catch (error) {
       console.log(error);
@@ -59,7 +59,7 @@ export default function Login() {
       });
       // send user info to our server
       userCreate();
-      history.push("/");
+      history.push("/profile");
     });
   };
 
@@ -78,6 +78,9 @@ export default function Login() {
         handleSubmit={handleSubmit}
         showPasswordInput="true"
       />
+      <Link className="text-danger float-right" to="/password/forgot">
+        Forgot Password
+      </Link>
     </div>
   );
 }

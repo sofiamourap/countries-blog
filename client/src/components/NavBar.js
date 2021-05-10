@@ -14,6 +14,7 @@ export default function NavBar() {
       type: "LOGGED_IN_USER",
       payload: null,
     });
+
     history.push("/login");
   };
 

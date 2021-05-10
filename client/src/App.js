@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import Register from "./pages/auth/Register";
 import PasswordUpdate from "./pages/auth/PasswordUpdate";
+import PasswordForgot from "./pages/auth/PasswordForgot";
 import Profile from "./pages/auth/Profile";
 import Login from "./pages/auth/Login";
 import CompleteRegistration from "./pages/auth/CompleteRegistration";
@@ -39,7 +40,8 @@ function App() {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/complete-registration" component={CompleteRegistration} />
+        <Route path="/complete/registration" component={CompleteRegistration} />
+        <Route path="/password/forgot" component={PasswordForgot} />
         <PrivateRoute path="/password/update" component={PasswordUpdate} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/post/create" component={Post} />

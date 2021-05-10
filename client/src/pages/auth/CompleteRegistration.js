@@ -43,7 +43,7 @@ export default function CompleteRegistration() {
         email,
         window.location.href
       );
-      console.log(result);
+      // console.log(result);
       if (result.user.emailVerified) {
         window.localStorage.removeItem("emailForRegistration");
         let user = auth.currentUser;
@@ -56,7 +56,7 @@ export default function CompleteRegistration() {
         });
         //make api request to save/update user in mongodb
         userCreate();
-        history.push("/");
+        history.push("/profile");
       }
     } catch (error) {
       console.log("register complete error", error.message);

@@ -20,11 +20,24 @@ const userCreate = async (parent, args, { req }) => {
       }).save();
 };
 
+const userUpdate = async (parent, args, { req }) => {
+  const currentUser = await authCheck(req);
+  console.log("INPUTS", args.input);
+  const updatedUser = await User.findOneAndUpdate(
+    { email: currentUser.email },
+    { ...args.input },
+    { new: true }
+  ).exec();
+  return updatedUser;
+};
+//exec is from mongoose
+
 module.exports = {
   Query: {
     me,
   },
   Mutation: {
     userCreate,
+    userUpdate,
   },
 };

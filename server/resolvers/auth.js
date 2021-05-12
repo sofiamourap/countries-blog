@@ -23,7 +23,7 @@ const userCreate = async (parent, args, { req }) => {
 
 const userUpdate = async (parent, args, { req }) => {
   const currentUser = await authCheck(req);
-  console.log("INPUTS", args.input);
+  console.log("ARGS.INPUT", args.input);
   const updatedUser = await User.findOneAndUpdate(
     { email: currentUser.email },
     { ...args.input },

@@ -10,7 +10,6 @@ require("dotenv").config();
 const { authCheck, authCheckMiddleware } = require("./helpers/auth");
 const cors = require("cors");
 const cloudinary = require("cloudinary");
-const { config } = require("dotenv");
 
 const app = express();
 
@@ -74,9 +73,11 @@ app.post("/uploadimages", authCheckMiddleware, (req, res) => {
   cloudinary.uploader.upload(
     req.body.image,
     (result) => {
+      console.log("RESULT CLOUDINARY", result);
       res.send({
-        url: result.url,
-        puclib_id: result.public_id,
+        // url: result.url, this is http
+        url: result.secure_url, //secure url https
+        public_id: result.public_id,
       });
     },
     {

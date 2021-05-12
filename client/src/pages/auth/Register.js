@@ -15,7 +15,6 @@ export default function Register() {
       handleCodeInApp: true,
     };
     const result = await auth.sendSignInLinkToEmail(email, config);
-    console.log("this is the result", result);
     //show toast notification to user avout email sent
     toast.success(
       `An email was send to ${email}. Click the link to complete your registration`

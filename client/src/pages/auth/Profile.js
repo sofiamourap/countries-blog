@@ -8,6 +8,7 @@ import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import UserProfile from "../../components/forms/UserProfile";
+import FileUpload from "../../components/FileUpload";
 
 export default function Profile() {
   const { state } = useContext(AuthContext);
@@ -49,80 +50,6 @@ export default function Profile() {
     }
   }, [data]);
 
-  const fileResizeAndUpload = (e) => {
-    setLoading(true);
-    let fileInput = false;
-    if (e.target.files[0]) {
-      fileInput = true;
-    }
-    if (fileInput) {
-      try {
-        Resizer.imageFileResizer(
-          e.target.files[0],
-          300,
-          300,
-          "JPEG",
-          100,
-          0,
-          (uri) => {
-            // console.log(uri);
-            axios
-              .post(
-                `${process.env.REACT_APP_REST_ENDPOINT}/uploadimages`,
-                { image: uri },
-                {
-                  headers: {
-                    authtoken: state.user.token,
-                  },
-                }
-              )
-              .then((response) => {
-                setLoading(false);
-                console.log("cloudinary upload", response);
-                setValues({ ...values, images: [...images, response.data] }); // data = {url, public_id}
-              })
-              .catch((error) => {
-                setLoading(false);
-                console.log("Cloudinary Upload Failed", error);
-              });
-          },
-          "base64",
-          200,
-          200
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const handleImageRemove = (id) => {
-    setLoading(true);
-    axios
-      .post(
-        `${process.env.REACT_APP_REST_ENDPOINT}/removeimage`,
-        {
-          public_id: id,
-        },
-        {
-          headers: {
-            authtoken: state.user.token,
-          },
-        }
-      )
-      .then((response) => {
-        setLoading(false);
-        let filteredImages = images.filter((item) => {
-          return item.public_id !== id;
-        });
-        setValues({ ...values, images: filteredImages });
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(values);
@@ -145,34 +72,12 @@ export default function Profile() {
             <h4>Profile</h4>
           )}
         </div>
-        <div className="col-md-3">
-          <div className="form-group">
-            <label className="btn btn-primary">
-              Upload Image
-              <input
-                hidden
-                type="file"
-                accept="image/*"
-                onChange={fileResizeAndUpload}
-                className="form-control"
-                placeholder="Image"
-                // disable={loading}
-              />
-            </label>
-          </div>
-        </div>
-        <div className="col-md-9">
-          {images.map((image) => (
-            <img
-              src={image.url}
-              key={image.public_id}
-              alt={image.public_id}
-              style={{ height: "100px" }}
-              className="float-right"
-              onClick={() => handleImageRemove(image.public_id)}
-            />
-          ))}
-        </div>
+        <FileUpload
+          setValues={setValues}
+          values={values}
+          setLoading={setLoading}
+          loading={loading}
+        />
       </div>
 
       <UserProfile

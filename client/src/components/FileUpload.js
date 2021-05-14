@@ -2,6 +2,7 @@ import React, { useContext, Fragment } from "react";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
+import Images from "./Images";
 
 export default function FileUpload({ setLoading, setValues, values, loading }) {
   const { state } = useContext(AuthContext);
@@ -70,10 +71,11 @@ export default function FileUpload({ setLoading, setValues, values, loading }) {
       )
       .then((response) => {
         setLoading(false);
+        const { images } = values;
         let filteredImages = images.filter((item) => {
           return item.public_id !== id;
         });
-        const { images } = values;
+
         setValues({ ...values, images: filteredImages });
       })
       .catch((error) => {
@@ -101,13 +103,10 @@ export default function FileUpload({ setLoading, setValues, values, loading }) {
       </div>
       <div className="col-md-9">
         {values.images.map((image) => (
-          <img
-            src={image.url}
+          <Images
+            image={image}
             key={image.public_id}
-            alt={image.public_id}
-            style={{ height: "100px" }}
-            className="float-right"
-            onClick={() => handleImageRemove(image.public_id)}
+            handleImageRemove={handleImageRemove}
           />
         ))}
       </div>

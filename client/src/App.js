@@ -7,6 +7,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { ToastContainer } from "react-toastify";
 //components
 import Home from "./pages/Home";
+import Users from "./pages/Users";
 import NavBar from "./components/NavBar";
 import Register from "./pages/auth/Register";
 import PasswordUpdate from "./pages/auth/PasswordUpdate";
@@ -47,6 +48,7 @@ function App() {
         <PrivateRoute path="/password/update" component={PasswordUpdate} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/post/create" component={Post} />
+        <Route path="/users" component={Users} />
         <Route path="/" component={Home} />
       </Switch>
     </ApolloProvider>

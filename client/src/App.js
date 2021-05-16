@@ -16,6 +16,7 @@ import Login from "./pages/auth/Login";
 import CompleteRegistration from "./pages/auth/CompleteRegistration";
 import { AuthContext } from "./context/authContext";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 import Post from "./pages/post/Post";
 
 function App() {
@@ -39,8 +40,8 @@ function App() {
       <NavBar />
       <ToastContainer />
       <Switch>
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
+        <PublicRoute path="/register" component={Register} />
+        <PublicRoute path="/login" component={Login} />
         <Route path="/complete-registration" component={CompleteRegistration} />
         <Route path="/password/forgot" component={PasswordForgot} />
         <PrivateRoute path="/password/update" component={PasswordUpdate} />

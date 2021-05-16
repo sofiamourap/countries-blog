@@ -9,7 +9,7 @@ export default function NavBar() {
   let history = useHistory();
 
   const logout = () => {
-    auth().signOut();
+    auth.signOut();
     dispatch({
       type: "LOGGED_IN_USER",
       payload: null,

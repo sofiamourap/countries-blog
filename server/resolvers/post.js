@@ -40,6 +40,39 @@ const postCreate = async (parent, args, { req }) => {
   return newPost;
 };
 
+const postUpdate = async (parent, args, { req }) => {
+  const loggedInUser = await authCheck(req);
+  //validation
+  if (args.input.content.trim() === "") throw new Error("Content is required");
+  // get current user _id in mongodb based in email
+  const currentUser = await User.findOne({ email: loggedInUser.email }).exec();
+  //_id of post to update
+  const postToUpdate = await Post.findById({ _id: args.input._id }).exec();
+  //if currentuser id and id of the postedBy user id is the same, allow update
+  if (currentUser._id.toString() !== postToUpdate.postedBy._id.toString())
+    throw new Error("Unauthorized action");
+  let updatedPost = await Post.findByIdAndUpdate(
+    args.input._id,
+    {
+      ...args.input,
+    },
+    { new: true }
+  );
+  return updatedPost;
+};
+
+const postDelete = async (parent, args, { req }) => {
+  const loggedInUser = await authCheck(req);
+  const currentUser = await User.findOne({
+    email: loggedInUser.email,
+  });
+  const postToDelete = await Post.findById({ _id: args.postId }).exec();
+  if (currentUser._id.toString() !== postToDelete.postedBy._id.toString())
+    throw new Error("Unauthorized action");
+  let deletedPost = await Post.findByIdAndDelete({ _id: args.postId }).exec();
+  return deletedPost;
+};
+
 module.exports = {
   Query: {
     allPosts,
@@ -47,5 +80,7 @@ module.exports = {
   },
   Mutation: {
     postCreate,
+    postUpdate,
+    postDelete,
   },
 };

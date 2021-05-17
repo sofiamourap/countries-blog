@@ -4,7 +4,13 @@ import axios from "axios";
 import { AuthContext } from "../context/authContext";
 import Images from "./Images";
 
-export default function FileUpload({ setLoading, setValues, values, loading }) {
+export default function FileUpload({
+  setLoading,
+  setValues,
+  values,
+  loading,
+  singleUpload = false,
+}) {
   const { state } = useContext(AuthContext);
 
   const fileResizeAndUpload = (e) => {
@@ -37,8 +43,15 @@ export default function FileUpload({ setLoading, setValues, values, loading }) {
               .then((response) => {
                 setLoading(false);
                 console.log("cloudinary upload", response);
-                const { images } = values;
-                setValues({ ...values, images: [...images, response.data] }); // data = {url, public_id}
+                //set values to parent component based on either it is used fpr single/multiple upload
+                if (singleUpload) {
+                  //single upload
+                  const { image } = values;
+                  setValues({ ...values, image: response.data });
+                } else {
+                  const { images } = values;
+                  setValues({ ...values, images: [...images, response.data] }); // data = {url, public_id}
+                }
               })
               .catch((error) => {
                 setLoading(false);
@@ -71,12 +84,23 @@ export default function FileUpload({ setLoading, setValues, values, loading }) {
       )
       .then((response) => {
         setLoading(false);
-        const { images } = values;
-        let filteredImages = images.filter((item) => {
-          return item.public_id !== id;
-        });
-
-        setValues({ ...values, images: filteredImages });
+        //set values to parent component based on either it is used fpr single/multiple upload
+        if (singleUpload) {
+          const { image } = values;
+          setValues({
+            ...values,
+            image: {
+              url: "",
+              public_id: "",
+            },
+          });
+        } else {
+          const { images } = values;
+          let filteredImages = images.filter((item) => {
+            return item.public_id !== id;
+          });
+          setValues({ ...values, images: filteredImages });
+        }
       })
       .catch((error) => {
         setLoading(false);
@@ -102,13 +126,24 @@ export default function FileUpload({ setLoading, setValues, values, loading }) {
         </div>
       </div>
       <div className="col-md-9">
-        {values.images.map((image) => (
+        {/* for single images */}
+        {values.image && (
           <Images
-            image={image}
-            key={image.public_id}
+            image={values.image}
+            key={values.image.public_id}
             handleImageRemove={handleImageRemove}
           />
-        ))}
+        )}
+
+        {/* for multiple images */}
+        {values.images &&
+          values.images.map((image) => (
+            <Images
+              image={image}
+              key={image.public_id}
+              handleImageRemove={handleImageRemove}
+            />
+          ))}
       </div>
     </div>
   );

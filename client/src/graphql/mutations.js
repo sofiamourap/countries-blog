@@ -1,4 +1,4 @@
-import { USER_INFO } from "./fragments";
+import { POST_DATA, USER_INFO } from "./fragments";
 import { gql } from "apollo-boost";
 
 export const USER_UPDATE = gql`
@@ -8,4 +8,13 @@ export const USER_UPDATE = gql`
     }
   }
   ${USER_INFO}
+`;
+
+export const POST_CREATE = gql`
+  mutation postCreate($input: PostCreateInput!) {
+    postCreate(input: $input) {
+      ...postData
+    }
+  }
+  ${POST_DATA}
 `;

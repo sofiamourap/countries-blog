@@ -56,7 +56,7 @@ export default function CompleteRegistration() {
         });
         //make api request to save/update user in mongodb
         userCreate();
-        history.push("/profile");
+        history.push("/post/create");
       }
     } catch (error) {
       console.log("register complete error", error.message);

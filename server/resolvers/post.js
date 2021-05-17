@@ -6,7 +6,10 @@ const User = require("../models/user");
 
 //queries
 const allPosts = async (parent, args) => {
-  return await Post.find({}).exec();
+  return await Post.find({})
+    .populate("postedBy", "username _id")
+    .sort({ createdAt: -1 })
+    .exec();
 };
 
 const postByUser = async (parent, args, { req }) => {

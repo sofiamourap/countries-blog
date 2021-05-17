@@ -109,7 +109,11 @@ export default function Post() {
         {posts &&
           posts.postByUser.map((post) => (
             <div className="col-md-6 pt-5" key={post._id}>
-              <PostCard post={post} />
+              <PostCard
+                post={post}
+                showUpdateButton={true}
+                showDeleteButton={true}
+              />
             </div>
           ))}
       </div>

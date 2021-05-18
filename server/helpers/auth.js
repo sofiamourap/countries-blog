@@ -38,7 +38,7 @@ exports.authCheckMiddleware = (req, res, next) => {
       .then((result) => {
         next();
       })
-      .catch((error) => conmsole.log(error));
+      .catch((error) => console.log(error));
   } else {
     res.json({ error: "Unauthorize. Please provide a token" });
   }

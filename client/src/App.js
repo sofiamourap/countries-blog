@@ -20,6 +20,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Post from "./pages/post/Post";
 import PostUpdate from "./pages/post/PostUpdate";
+import SinglePost from "./pages/post/SinglePost";
 import SingleUser from "./pages/SingleUser";
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           component={PostUpdate}
         />
         <PrivateRoute path="/post/create" component={Post} />
+        <Route path="/post/:postid" component={SinglePost} />
 
         <Route path="/users" component={Users} />
         <Route path="/user/:username" component={SingleUser} />

@@ -21,6 +21,10 @@ const postSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
+    country: {
+      type: String,
+      required: "Please select a Country",
+    },
   },
   { timestamps: true }
 );

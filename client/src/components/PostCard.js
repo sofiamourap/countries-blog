@@ -9,14 +9,15 @@ const PostCard = ({
   showDeleteButton = false,
 }) => {
   const history = useHistory();
-  const { image, content, postedBy } = post;
+  const { image, content, postedBy, country } = post;
   return (
     <div className="card text-center" style={{ minHeight: "375px" }}>
       <div className="card-body">
         <Link to={`/post/${post._id}`}>
           <Images image={image} />
         </Link>
-        <h4 className="text-primary">@{post.postedBy.username}</h4>
+        <h4 className="text-primary">{country}</h4>
+        <p className="text-primary">@{post.postedBy.username}</p>
         <hr />
         <small>{content}</small>
         <br />

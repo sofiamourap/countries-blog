@@ -6,17 +6,20 @@ module.exports = gql`
     content: String
     image: Image
     postedBy: User
+    country: String
   }
 
   input PostCreateInput {
     content: String!
     image: ImageInput
+    country: String!
   }
 
   input PostUpdateInput {
     _id: String!
     content: String!
     image: ImageInput
+    country: String!
   }
 
   type Query {

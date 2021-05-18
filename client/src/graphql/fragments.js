@@ -28,5 +28,6 @@ export const POST_DATA = gql`
       _id
       username
     }
+    country
   }
 `;

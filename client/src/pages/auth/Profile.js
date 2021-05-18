@@ -4,8 +4,6 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import omitDeep from "omit-deep";
 import { PROFILE } from "../../graphql/queries";
 import { USER_UPDATE } from "../../graphql/mutations";
-import Resizer from "react-image-file-resizer";
-import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import UserProfile from "../../components/forms/UserProfile";
 import FileUpload from "../../components/FileUpload";

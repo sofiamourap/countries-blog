@@ -6,6 +6,7 @@ import { POST_UPDATE } from "../../graphql/mutations";
 import omitDeep from "omit-deep";
 import { useParams } from "react-router-dom";
 import FileUpload from "../../components/FileUpload";
+import PostForm from "../../components/forms/PostForm";
 
 export default function PostUpdate() {
   const [values, setValues] = useState({
@@ -14,6 +15,7 @@ export default function PostUpdate() {
       url: "",
       public_id: "",
     },
+    country: "",
   });
 
   const [getSinglePost, { data: singlePost }] = useLazyQuery(SINGLE_POST);
@@ -64,28 +66,12 @@ export default function PostUpdate() {
         setLoading={setLoading}
         singleUpload={true}
       />
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <textarea
-            value={content}
-            onChange={handleChange}
-            name="content"
-            rows="10"
-            className="md-textarea form-control"
-            placeholder="Write something cool"
-            maxLength="300"
-            disabled={loading}
-          ></textarea>
-        </div>
-
-        <button
-          className="btn btn-primary"
-          type="submit"
-          disabled={loading || !content}
-        >
-          Post
-        </button>
-      </form>
+      <PostForm
+        handleSubmit={handleSubmit}
+        values={values}
+        handleChange={handleChange}
+        loading={loading}
+      />
     </div>
   );
 }

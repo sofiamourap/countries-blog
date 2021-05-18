@@ -19,6 +19,7 @@ import { AuthContext } from "./context/authContext";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Post from "./pages/post/Post";
+import PostUpdate from "./pages/post/PostUpdate";
 import SingleUser from "./pages/SingleUser";
 
 function App() {
@@ -48,7 +49,13 @@ function App() {
         <Route path="/password/forgot" component={PasswordForgot} />
         <PrivateRoute path="/password/update" component={PasswordUpdate} />
         <PrivateRoute path="/profile" component={Profile} />
+        <PrivateRoute
+          exact
+          path="/post/update/:postid"
+          component={PostUpdate}
+        />
         <PrivateRoute path="/post/create" component={Post} />
+
         <Route path="/users" component={Users} />
         <Route path="/user/:username" component={SingleUser} />
         <Route path="/" component={Home} />

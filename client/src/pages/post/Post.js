@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/authContext";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import omitDeep from "omit-deep";
 import FileUpload from "../../components/FileUpload";
-import { POST_CREATE } from "../../graphql/mutations";
+import { POST_CREATE, POST_DELETE } from "../../graphql/mutations";
 import { POST_BY_USER } from "../../graphql/queries";
 import PostCard from "../../components/PostCard";
 
@@ -43,6 +43,29 @@ export default function Post() {
     onError: (err) => console.log(err),
   });
 
+  const [postDelete] = useMutation(POST_DELETE, {
+    update: ({ data }) => {
+      console.log("POST DELETE MUTSTION", data);
+      toast.error("Post deleted");
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error("Post delete failed");
+    },
+  });
+
+  const handleDelete = async (postId) => {
+    let answer = window.confirm("Delete this post?");
+    if (answer) {
+      setLoading(true);
+      postDelete({
+        variables: { postId },
+        refetchQueries: [{ query: POST_BY_USER }], //provided by Apollo react
+      });
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -68,7 +91,7 @@ export default function Post() {
             rows="10"
             className="md-textarea form-control"
             placeholder="Write something cool"
-            maxLength="500"
+            maxLength="300"
             disabled={loading}
           ></textarea>
         </div>
@@ -113,6 +136,7 @@ export default function Post() {
                 post={post}
                 showUpdateButton={true}
                 showDeleteButton={true}
+                handleDelete={handleDelete}
               />
             </div>
           ))}

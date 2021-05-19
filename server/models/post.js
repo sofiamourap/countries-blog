@@ -3,10 +3,14 @@ const { ObjectId } = mongoose.Schema;
 
 const postSchema = new mongoose.Schema(
   {
+    country: {
+      type: String,
+      required: "Please select a Country",
+      text: true,
+    },
     content: {
       type: String,
       required: "content is required",
-      text: true,
     },
     image: {
       url: {
@@ -21,10 +25,6 @@ const postSchema = new mongoose.Schema(
     postedBy: {
       type: ObjectId,
       ref: "User",
-    },
-    country: {
-      type: String,
-      required: "Please select a Country",
     },
   },
   { timestamps: true }

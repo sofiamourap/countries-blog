@@ -8,7 +8,7 @@ export default function PostForm({
   loading,
 }) {
   const [countriesList, setCountriesList] = useState([]);
-  const { content, image, country } = values;
+  const { content, country } = values;
 
   useEffect(() => {
     async function getCountries() {
@@ -26,13 +26,11 @@ export default function PostForm({
               Select Country
             </label>
             <select
-              value={country}
               className="form-control mb-2"
               id="lg_country"
               onChange={handleChange}
               name="country"
               disabled={loading}
-              placeholder="Select Country"
             >
               <option hidden>Select a country</option>
               {countriesList.map((country, i) => (
@@ -46,7 +44,7 @@ export default function PostForm({
             value={content}
             onChange={handleChange}
             name="content"
-            rows="10"
+            rows="8"
             className="md-textarea form-control"
             placeholder="Write something cool"
             maxLength="300"

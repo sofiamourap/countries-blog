@@ -103,8 +103,6 @@ export default function Post() {
           loading={loading}
         />
       </div>
-
-      <hr />
       <div className="row p-5">
         {posts &&
           posts.postByUser.map((post) => (

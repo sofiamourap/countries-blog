@@ -18,8 +18,8 @@ const USER_CREATE = gql`
 
 export default function Login() {
   const { dispatch } = useContext(AuthContext);
-  const [email, setEmail] = useState("sofiamourap@gmail.com");
-  const [password, setPassword] = useState("sofia123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   let history = useHistory();
 

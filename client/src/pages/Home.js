@@ -33,8 +33,6 @@ function Home() {
           ))}
       </div>
       <PostPagination page={page} setPage={setPage} postCount={postCount} />
-      <hr />
-      {JSON.stringify(state.user)}
     </div>
   );
 }

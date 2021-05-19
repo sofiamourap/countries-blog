@@ -11,6 +11,7 @@ const postSchema = new mongoose.Schema(
     content: {
       type: String,
       required: "content is required",
+      text: true,
     },
     image: {
       url: {

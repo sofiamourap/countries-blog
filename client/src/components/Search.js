@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default function Search() {
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState("");
   let history = useHistory();
 
   const handleSubmit = (e) => {

@@ -1,5 +1,5 @@
 var express = require("express");
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer, PubSub } = require("apollo-server-express");
 const http = require("http");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,6 +10,8 @@ require("dotenv").config();
 const { authCheck, authCheckMiddleware } = require("./helpers/auth");
 const cors = require("cors");
 const cloudinary = require("cloudinary");
+
+const pubsub = new PubSub();
 
 const app = express();
 
@@ -45,7 +47,7 @@ const resolvers = mergeResolvers(
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ req, res }),
+  context: ({ req }) => ({ req, pubsub }),
 });
 
 // middleware - connecting ApolloServer to express
@@ -53,6 +55,7 @@ apolloServer.applyMiddleware({ app });
 
 // server
 const httpserver = http.createServer(app);
+apolloServer.installSubscriptionHandlers(httpserver);
 
 // rest endpoint
 app.get("/rest", authCheck, function (req, res) {
@@ -97,9 +100,12 @@ app.post("/removeimage", authCheckMiddleware, (req, res) => {
 });
 
 // Port
-app.listen(process.env.PORT, function () {
+httpserver.listen(process.env.PORT, function () {
   console.log(`server is ready at http://localhost${process.env.PORT}`);
   console.log(
     `graphql server is ready at http://localhost${process.env.PORT}${apolloServer.graphqlPath}`
+  );
+  console.log(
+    `subscription is ready at http://localhost${process.env.PORT}${apolloServer.subscriptionsPath}`
   );
 });

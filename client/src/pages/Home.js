@@ -1,10 +1,26 @@
 import React, { useState, useContext } from "react";
-import { useQuery, useLazyQuery } from "@apollo/react-hooks";
+import { useQuery, useLazyQuery, useSubscription } from "@apollo/react-hooks";
 import { AuthContext } from "../context/authContext";
 import { useHistory } from "react-router-dom";
 import { GET_ALL_POSTS, TOTAL_POSTS } from "../graphql/queries";
 import PostCard from "../components/PostCard";
 import PostPagination from "../components/PostPagination";
+import { gql } from "apollo-boost";
+
+const POST_ADDED = gql`
+  subscription {
+    postAdded {
+      _id
+      content
+      image {
+        url
+      }
+      postedBy {
+        username
+      }
+    }
+  }
+`;
 
 function Home() {
   const [page, setPage] = useState(1);
@@ -13,6 +29,7 @@ function Home() {
   });
   const { data: postCount } = useQuery(TOTAL_POSTS);
   const [fetchPosts, { data: posts }] = useLazyQuery(GET_ALL_POSTS);
+  const { data: newPost } = useSubscription(POST_ADDED);
 
   //access context
   const { state, dispatch } = useContext(AuthContext);
@@ -33,6 +50,9 @@ function Home() {
           ))}
       </div>
       <PostPagination page={page} setPage={setPage} postCount={postCount} />
+      <hr />
+      NEW POST SUBSCRIPTION
+      {JSON.stringify(newPost)}
     </div>
   );
 }

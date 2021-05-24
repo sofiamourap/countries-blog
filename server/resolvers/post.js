@@ -33,7 +33,7 @@ const singlePost = async (parent, args) => {
 };
 
 //mutations                          context.req
-const postCreate = async (parent, args, { req }) => {
+const postCreate = async (parent, args, { req, pubsub }) => {
   const loggedInUser = await authCheck(req);
   //validation
   if (args.input.content.trim() === "") throw new Error("Content is required");
@@ -46,6 +46,8 @@ const postCreate = async (parent, args, { req }) => {
   })
     .save()
     .then((post) => post.populate("postedBy", "_id username").execPopulate());
+
+  pubsub.publish(POST_ADDED, { postAdded: newPost });
 
   return newPost;
 };
@@ -94,6 +96,9 @@ const search = async (parent, { query }) => {
     .exec();
 };
 
+// subscriptions
+const POST_ADDED = "POST_ADDED";
+
 module.exports = {
   Query: {
     allPosts,
@@ -106,5 +111,11 @@ module.exports = {
     postCreate,
     postUpdate,
     postDelete,
+  },
+  Subscription: {
+    postAdded: {
+      subscribe: (parent, args, { pubsub }) =>
+        pubsub.asyncIterator([POST_ADDED]),
+    },
   },
 };

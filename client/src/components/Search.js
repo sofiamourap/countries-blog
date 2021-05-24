@@ -22,7 +22,7 @@ export default function Search() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
-          Searchd
+          Search
         </button>
       </form>
     </div>

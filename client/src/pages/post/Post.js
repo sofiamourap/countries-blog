@@ -71,7 +71,7 @@ export default function Post() {
     postCreate({ variables: { input: values } });
     setValues(initialState);
     setLoading(false);
-    toast.success("Post created");
+    // toast.success("Post created");
   };
 
   const handleChange = (e) => {

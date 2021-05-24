@@ -37,10 +37,9 @@ const singlePost = async (parent, args) => {
     .exec();
 };
 
-//mutations                          context.req
+//mutations                               context.req
 const postCreate = async (parent, args, { req, pubsub }) => {
   const loggedInUser = await authCheck(req);
-  //validation
   if (args.input.content.trim() === "") throw new Error("Content is required");
   const currentUser = await User.findOne({
     email: loggedInUser.email,

@@ -37,7 +37,6 @@ import SearchResult from "./components/SearchResult";
 function App() {
   const { state } = useContext(AuthContext);
   const { user } = state;
-  // console.log(user, user.token);
 
   //create ws link
   const wsLink = new WebSocketLink({
@@ -82,6 +81,19 @@ function App() {
     cache: new InMemoryCache(),
     link,
   });
+
+  //config without subscription
+
+  // const client = new ApolloClient({
+  //     uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+  //     request: (operation) => {
+  //         operation.setContext({
+  //             headers: {
+  //                 authtoken: user ? user.token : ''
+  //             }
+  //         });
+  //     }
+  // });
 
   return (
     <ApolloProvider client={client}>

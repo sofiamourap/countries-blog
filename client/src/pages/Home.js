@@ -10,7 +10,6 @@ import {
 } from "../graphql/subscriptions";
 import PostCard from "../components/PostCard";
 import PostPagination from "../components/PostPagination";
-import { gql } from "apollo-boost";
 import { toast } from "react-toastify";
 
 function Home() {
@@ -27,7 +26,7 @@ function Home() {
       client: { cache },
       subscriptionData: { data },
     }) => {
-      console.log(data);
+      console.log("DATA FROM POST ADDED", data);
       //read query from cache
       const { allPosts } = cache.readQuery({
         query: GET_ALL_POSTS,
@@ -44,7 +43,7 @@ function Home() {
       //refetch all posts to update ui
       fetchPosts({
         variables: { page },
-        refetchQueries: [{ query: GET_ALL_POSTS }],
+        refetchQueries: [{ query: GET_ALL_POSTS, variables: { page } }],
       });
 
       //show toast notification
@@ -81,9 +80,6 @@ function Home() {
         variables: { page },
         refetchQueries: [{ query: GET_ALL_POSTS }],
       });
-
-      //show toast notification
-      toast.error(`deleted post`);
     },
   });
 
@@ -106,9 +102,6 @@ function Home() {
           ))}
       </div>
       <PostPagination page={page} setPage={setPage} postCount={postCount} />
-      <hr />
-      NEW POST SUBSCRIPTION
-      {JSON.stringify(newPost)}
     </div>
   );
 }

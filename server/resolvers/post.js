@@ -4,6 +4,11 @@ const { DateTimeResolver } = require("graphql-scalars");
 const Post = require("../models/post");
 const User = require("../models/user");
 
+// subscriptions
+const POST_ADDED = "POST_ADDED";
+const POST_UPDATED = "POST_UPDATED";
+const POST_DELETED = "POST_DELETED";
+
 //queries
 const allPosts = async (parent, args) => {
   const currentPage = args.page || 1;
@@ -52,7 +57,7 @@ const postCreate = async (parent, args, { req, pubsub }) => {
   return newPost;
 };
 
-const postUpdate = async (parent, args, { req }) => {
+const postUpdate = async (parent, args, { req, pubsub }) => {
   const loggedInUser = await authCheck(req);
   //validation
   if (args.input.content.trim() === "") throw new Error("Content is required");
@@ -72,10 +77,14 @@ const postUpdate = async (parent, args, { req }) => {
   )
     .exec()
     .then((post) => post.populate("postedBy", "_id username").execPopulate());
+
+  pubsub.publish(POST_UPDATED, {
+    postUpdated: updatedPost,
+  });
   return updatedPost;
 };
 
-const postDelete = async (parent, args, { req }) => {
+const postDelete = async (parent, args, { req, pubsub }) => {
   const loggedInUser = await authCheck(req);
   const currentUser = await User.findOne({
     email: loggedInUser.email,
@@ -83,7 +92,13 @@ const postDelete = async (parent, args, { req }) => {
   const postToDelete = await Post.findById({ _id: args.postId }).exec();
   if (currentUser._id.toString() !== postToDelete.postedBy._id.toString())
     throw new Error("Unauthorized action");
-  let deletedPost = await Post.findByIdAndDelete({ _id: args.postId }).exec();
+  let deletedPost = await Post.findByIdAndDelete({ _id: args.postId })
+    .exec()
+    .then((post) => post.populate("postedBy", "_id username").execPopulate());
+
+  pubsub.publish(POST_DELETED, {
+    postDeleted: deletedPost,
+  });
   return deletedPost;
 };
 
@@ -95,9 +110,6 @@ const search = async (parent, { query }) => {
     .populate("postedBy", "username")
     .exec();
 };
-
-// subscriptions
-const POST_ADDED = "POST_ADDED";
 
 module.exports = {
   Query: {
@@ -116,6 +128,14 @@ module.exports = {
     postAdded: {
       subscribe: (parent, args, { pubsub }) =>
         pubsub.asyncIterator([POST_ADDED]),
+    },
+    postUpdated: {
+      subscribe: (parent, args, { pubsub }) =>
+        pubsub.asyncIterator([POST_UPDATED]),
+    },
+    postDeleted: {
+      subscribe: (parent, args, { pubsub }) =>
+        pubsub.asyncIterator([POST_DELETED]),
     },
   },
 };

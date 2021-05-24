@@ -83,17 +83,6 @@ function App() {
     link,
   });
 
-  // const client = new ApolloClient({
-  //   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-  //   request: (operation) => {
-  //     operation.setContext({
-  //       headers: {
-  //         authtoken: user ? user.token : "",
-  //       },
-  //     });
-  //   },
-  // });
-
   return (
     <ApolloProvider client={client}>
       <NavBar />

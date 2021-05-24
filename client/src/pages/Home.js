@@ -3,24 +3,15 @@ import { useQuery, useLazyQuery, useSubscription } from "@apollo/react-hooks";
 import { AuthContext } from "../context/authContext";
 import { useHistory } from "react-router-dom";
 import { GET_ALL_POSTS, TOTAL_POSTS } from "../graphql/queries";
+import {
+  POST_ADDED,
+  POST_UPDATED,
+  POST_DELETED,
+} from "../graphql/subscriptions";
 import PostCard from "../components/PostCard";
 import PostPagination from "../components/PostPagination";
 import { gql } from "apollo-boost";
-
-const POST_ADDED = gql`
-  subscription {
-    postAdded {
-      _id
-      content
-      image {
-        url
-      }
-      postedBy {
-        username
-      }
-    }
-  }
-`;
+import { toast } from "react-toastify";
 
 function Home() {
   const [page, setPage] = useState(1);
@@ -29,7 +20,72 @@ function Home() {
   });
   const { data: postCount } = useQuery(TOTAL_POSTS);
   const [fetchPosts, { data: posts }] = useLazyQuery(GET_ALL_POSTS);
-  const { data: newPost } = useSubscription(POST_ADDED);
+
+  //subscription | post added
+  const { data: newPost } = useSubscription(POST_ADDED, {
+    onSubscriptionData: async ({
+      client: { cache },
+      subscriptionData: { data },
+    }) => {
+      console.log(data);
+      //read query from cache
+      const { allPosts } = cache.readQuery({
+        query: GET_ALL_POSTS,
+        variables: { page },
+      });
+      //write back to cache
+      cache.writeQuery({
+        query: GET_ALL_POSTS,
+        variables: { page },
+        data: {
+          allPosts: [data.postAdded, ...allPosts],
+        },
+      });
+      //refetch all posts to update ui
+      fetchPosts({
+        variables: { page },
+        refetchQueries: [{ query: GET_ALL_POSTS }],
+      });
+
+      //show toast notification
+      toast.success(`New post about ${data.postAdded.country}!`);
+    },
+  });
+
+  //subscription | post updated
+  const { data: updatedPost } = useSubscription(POST_UPDATED);
+
+  //subscription | post deleted
+  const { data: deletedPost } = useSubscription(POST_DELETED, {
+    onSubscriptionData: async ({
+      client: { cache },
+      subscriptionData: { data },
+    }) => {
+      //read query from cache
+      const { allPosts } = cache.readQuery({
+        query: GET_ALL_POSTS,
+        variables: { page },
+      });
+      let filteredPost = allPosts.filter((p) => p._id !== data.postDeleted._id);
+
+      //write back to cache
+      cache.writeQuery({
+        query: GET_ALL_POSTS,
+        variables: { page },
+        data: {
+          allPosts: filteredPost,
+        },
+      });
+      //refetch all posts to update ui
+      fetchPosts({
+        variables: { page },
+        refetchQueries: [{ query: GET_ALL_POSTS }],
+      });
+
+      //show toast notification
+      toast.error(`deleted post`);
+    },
+  });
 
   //access context
   const { state, dispatch } = useContext(AuthContext);

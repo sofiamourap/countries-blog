@@ -44,7 +44,6 @@ export default function Post() {
 
   const [postDelete] = useMutation(POST_DELETE, {
     update: ({ data }) => {
-      console.log("POST DELETE MUTSTION", data);
       toast.error("Post deleted");
     },
     onError: (err) => {
@@ -71,7 +70,7 @@ export default function Post() {
     postCreate({ variables: { input: values } });
     setValues(initialState);
     setLoading(false);
-    // toast.success("Post created");
+    toast.success("Post created");
   };
 
   const handleChange = (e) => {

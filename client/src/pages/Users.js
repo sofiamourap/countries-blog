@@ -1,7 +1,5 @@
-import React, { useState, useContext } from "react";
-import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
-import { useQuery, useLazyQuery } from "@apollo/react-hooks";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
 import { ALL_USERS } from "../graphql/queries";
 import UserCard from "../components/UserCard";
 

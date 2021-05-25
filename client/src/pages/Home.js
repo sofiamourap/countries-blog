@@ -26,7 +26,6 @@ function Home() {
       client: { cache },
       subscriptionData: { data },
     }) => {
-      console.log("DATA FROM POST ADDED", data);
       //read query from cache
       const { allPosts } = cache.readQuery({
         query: GET_ALL_POSTS,
@@ -47,7 +46,9 @@ function Home() {
       });
 
       //show toast notification
-      toast.success(`New post about ${data.postAdded.country}!`);
+      toast.success(`New post about ${data.postAdded.country}!`, {
+        toastId: "individualId",
+      });
     },
   });
 

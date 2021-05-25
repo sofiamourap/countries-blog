@@ -109,7 +109,7 @@ export default function FileUpload({
   };
   return (
     <div className="row">
-      <div className="col-md-3">
+      <div className="col-md-4">
         <div className="form-group">
           <label className="btn btn-primary">
             Upload Image
@@ -125,7 +125,7 @@ export default function FileUpload({
           </label>
         </div>
       </div>
-      <div className="col-md-9">
+      <div className="col-md-8">
         {/* for single images */}
         {values.image && (
           <Images
